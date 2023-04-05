@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ApplicantService {
@@ -16,8 +17,16 @@ public class ApplicantService {
         return applicantRepository.findAll();
     }
 
-    public Applicant save(Applicant applicant){
-        applicantRepository.save(applicant);
-        return applicant;
+    public void save(Applicant applicant){
+
+        Optional<Applicant> existingApplicant = applicantRepository.findById(applicant.getId());
+
+        if(existingApplicant.isPresent()) {
+            existingApplicant.get().setName(applicant.getName());
+            existingApplicant.get().setPhone(applicant.getPhone());
+            applicantRepository.save(existingApplicant.get());
+        }else{
+            applicantRepository.save(applicant);
+        }
     }
 }
