@@ -43,6 +43,8 @@ public class LoanService {
          if(loan.getLoanStatus().equals(LoanStatus.PROGGRESS)){
              Item item = retrieveItem(loan.getItem().getId());
              itemService.executeDevolution(item);
+             loan.setLoanStatus(LoanStatus.RETURNED);
+             loanRepository.save(loan);
          }else throw new RuntimeException("Loan is not in progress.");
 
      }
