@@ -34,4 +34,8 @@ public class ItemService {
             itemRepository.save(item);
         }
     }
+    public void executeDevolution(Item item){
+        item.setStatus(ItemStatus.AVAILABLE);
+        itemRepository.save(item);
+    }
 }
