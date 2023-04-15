@@ -6,6 +6,7 @@ import com.univesp.PI1.repository.ItemRepository;
 import com.univesp.PI1.repository.LoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -22,6 +23,7 @@ public class LoanService {
     @Autowired
     ItemService itemService;
 
+    @Transactional
      public void itemLoan(ItemLoanDTO dto){
 
          Loan loan = new Loan();
@@ -29,6 +31,9 @@ public class LoanService {
 
          Item item = retrieveItem(dto.getItemId());
          loan.setItem(checkItemAvailability(item));
+
+        item.setStatus(ItemStatus.BORROWED);
+        itemRepository.save(item);
 
          loan.setLoanDate(Instant.now());
          loan.setLoanStatus(LoanStatus.PROGGRESS);
