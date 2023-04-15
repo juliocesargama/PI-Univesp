@@ -38,4 +38,9 @@ public class ItemService {
         item.setStatus(ItemStatus.AVAILABLE);
         itemRepository.save(item);
     }
+
+    public void executeLoan(Item item){
+        item.setStatus(ItemStatus.BORROWED);
+        itemRepository.save(item);
+    }
 }

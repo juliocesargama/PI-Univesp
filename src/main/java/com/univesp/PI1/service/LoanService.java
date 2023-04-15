@@ -31,9 +31,7 @@ public class LoanService {
 
          Item item = retrieveItem(dto.getItemId());
          loan.setItem(checkItemAvailability(item));
-
-        item.setStatus(ItemStatus.BORROWED);
-        itemRepository.save(item);
+         itemService.executeLoan(item);
 
          loan.setLoanDate(Instant.now());
          loan.setLoanStatus(LoanStatus.PROGGRESS);
