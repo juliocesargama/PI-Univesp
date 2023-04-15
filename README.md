@@ -11,5 +11,5 @@ Para este semestre, implementamos um sistema gerenciador de materiais pedagógic
 - Banco de dados relacional: MySQL 8.0
 
 ### Diagrama de classes
-![PI drawio](https://user-images.githubusercontent.com/70298438/229974304-b38e8ee8-7a33-471e-9a83-bdf530ab140d.png)
+![PI drawio](https://user-images.githubusercontent.com/70298438/230520696-68ac3df9-dd1e-4a59-8556-292653512560.png)
 
