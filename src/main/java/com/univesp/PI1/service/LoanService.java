@@ -41,7 +41,6 @@ public class LoanService {
          loan.setLoanDate(Instant.now());
          loan.setLoanStatus(LoanStatus.PROGGRESS);
 
-
          loan.setLoanDevolution(setDevolutionDate(dto.getDevolutionDays()));
 
         loanRepository.save(loan);
@@ -60,16 +59,27 @@ public class LoanService {
          }else throw new RuntimeException("Loan is not in progress.");
 
      }
-     public List<FindLoansDTO> findLoans(LoanStatus status){
-
-        List<Loan> loans = loanRepository.findByStatus(status);
-        return loans.stream().map(FindLoansDTO::new).toList();
+     public List<FindLoansDTO> findLoans(String status){
+         List<Loan> loans;
+        if(status.equalsIgnoreCase("ALL")){
+            loans = loanRepository.findAll();
+        }else {
+            loans = loanRepository.findByStatus(LoanStatus.valueOf(status));
+        }
+         return loans.stream().map(FindLoansDTO::new).toList();
      }
 
-     private Loan retrieveLoan(Integer id){
-         return loanRepository.findById(id)
-                 .orElseThrow();
-     }
+    public void checkLoansDelayed() {
+        List<Loan> loans = loanRepository.findAll();
+
+        loans.forEach(loan -> {
+             if(loan.getLoanStatus().equals(LoanStatus.PROGGRESS) &&
+                     Instant.now().isAfter(loan.getLoanDevolution())) {
+                 loan.setLoanStatus(LoanStatus.DELAYED);
+             }
+        });
+        loanRepository.saveAll(loans);
+    }
 
      private Applicant retrieveApplicant(Integer id){
          return applicantRepository.findById(id)
