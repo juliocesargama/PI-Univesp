@@ -1,5 +1,6 @@
 package com.univesp.PI1.entity;
 
+import com.univesp.PI1.entity.Enums.ItemStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,7 +15,6 @@ public class Item {
     @Column(name = "description", nullable = false)
     private String description;
     @Column(name = "status", nullable = false)
-    @Transient
     @Enumerated(EnumType.STRING)
     private ItemStatus status;
 

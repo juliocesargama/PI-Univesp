@@ -1,7 +1,7 @@
 package com.univesp.PI1.service;
 
 import com.univesp.PI1.entity.Item;
-import com.univesp.PI1.entity.ItemStatus;
+import com.univesp.PI1.entity.Enums.ItemStatus;
 import com.univesp.PI1.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

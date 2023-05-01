@@ -1,5 +1,6 @@
 package com.univesp.PI1.entity;
 
+import com.univesp.PI1.entity.Enums.LoanStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,11 +17,10 @@ public class Loan {
     @ManyToOne
     private Applicant applicant;
 
-    @Column(name = "loan_date", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Column(name = "loan_date", nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+
     private Instant loanDate;
-    @Column(name = "loan_devolution", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Column(name = "loan_devolution", nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant loanDevolution;
 
     @Column(name = "loan_status", nullable = false)
