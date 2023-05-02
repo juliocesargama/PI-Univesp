@@ -18,7 +18,7 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
-    public void save(Item item){
+    public Item save(Item item){
 
         if(item.getId() != null) {
             Item existingItem = itemRepository
@@ -28,10 +28,10 @@ public class ItemService {
             existingItem.setName(item.getName());
             existingItem.setDescription(item.getDescription());
             existingItem.setStatus(item.getStatus());
-            itemRepository.save(existingItem);
+            return itemRepository.save(existingItem);
         }else{
             item.setStatus(ItemStatus.AVAILABLE);
-            itemRepository.save(item);
+            return itemRepository.save(item);
         }
     }
     public void executeDevolution(Item item){
