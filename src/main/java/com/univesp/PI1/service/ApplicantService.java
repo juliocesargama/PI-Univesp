@@ -16,7 +16,7 @@ public class ApplicantService {
         return applicantRepository.findAll();
     }
 
-    public void save(Applicant applicant){
+    public Applicant save(Applicant applicant){
 
         if(applicant.getId() != null) {
             Applicant existingApplicant = applicantRepository
@@ -25,9 +25,9 @@ public class ApplicantService {
 
             existingApplicant.setName(applicant.getName());
             existingApplicant.setPhone(applicant.getPhone());
-            applicantRepository.save(existingApplicant);
+            return applicantRepository.save(existingApplicant);
         }else{
-            applicantRepository.save(applicant);
+            return applicantRepository.save(applicant);
         }
     }
 }

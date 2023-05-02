@@ -19,7 +19,7 @@ public class ApplicantController {
     }
 
     @PostMapping(value = "/save")
-    public void saveApplicant(@RequestBody Applicant applicant){
-        applicantService.save(applicant);
+    public Applicant saveApplicant(@RequestBody Applicant applicant){
+        return applicantService.save(applicant);
     }
 }

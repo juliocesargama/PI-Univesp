@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class Applicant {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "name", nullable = false)
     private String name;
