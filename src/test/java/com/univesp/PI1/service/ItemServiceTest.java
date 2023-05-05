@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-
 public class ItemServiceTest {
 
     @Mock
@@ -68,6 +67,15 @@ public class ItemServiceTest {
     void UpdateItemFailedTest(){
         RuntimeException runtimeException = assertThrows(RuntimeException.class, () -> service.save(item));
         assertEquals("Item does not exists", runtimeException.getMessage());
+    }
+
+    @Test
+    void UpdateItemFailedItemNotAvailableTest(){
+        item.setStatus(ItemStatus.BORROWED);
+        Mockito.when(repository.findById(item.getId())).thenReturn(Optional.ofNullable(item));
+
+        RuntimeException runtimeException = assertThrows(RuntimeException.class, () -> service.save(item));
+        assertEquals("Item is not available, must return it first.", runtimeException.getMessage());
     }
 
     @Test

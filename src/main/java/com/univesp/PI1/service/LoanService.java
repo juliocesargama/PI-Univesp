@@ -29,49 +29,63 @@ public class LoanService {
     ItemService itemService;
 
     @Transactional
-     public void itemLoan(ItemLoanDTO dto){
+     public Loan itemLoan(ItemLoanDTO dto){
 
          Loan loan = new Loan();
-         loan.setApplicant(retrieveApplicant(dto.getApplicantId()));
+        Applicant applicant = applicantRepository.findById(dto.getApplicantId())
+                .orElseThrow(() -> new RuntimeException("Applicant does not exists."));
+         loan.setApplicant(applicant);
 
-         Item item = retrieveItem(dto.getItemId());
-         loan.setItem(checkItemAvailability(item));
-         itemService.executeLoan(item);
+         Item item = itemRepository.findById(dto.getItemId())
+                .orElseThrow(() -> new RuntimeException("Item does not exists."));
+
+        if(!item.getStatus().equals(ItemStatus.AVAILABLE)){
+            throw new RuntimeException("Item is not available for loan.");
+        }
+        loan.setItem(item);
+        itemService.executeLoan(item);
 
          loan.setLoanDate(Instant.now());
          loan.setLoanStatus(LoanStatus.PROGGRESS);
 
-         loan.setLoanDevolution(setDevolutionDate(dto.getDevolutionDays()));
-
+        if(dto.getDevolutionDays() < 1) {
+            throw new NumberFormatException("Invalid devolution days.");
+        }else{
+            loan.setLoanDevolution(Instant.now().plus(dto.getDevolutionDays(), ChronoUnit.DAYS));
+        }
         loanRepository.save(loan);
+        return loan;
      }
 
-     public void itemDevolution(Integer loanId){
+     @Transactional
+     public Loan itemDevolution(Integer loanId){
 
          Loan loan = loanRepository.findById(loanId)
                  .orElseThrow(() -> new RuntimeException("Loan does not exists."));
 
-         if(loan.getLoanStatus().equals(LoanStatus.PROGGRESS)){
-             Item item = retrieveItem(loan.getItem().getId());
+         if(!loan.getLoanStatus().equals(LoanStatus.RETURNED)){
+             Item item = itemRepository.findById(loan.getItem().getId())
+                     .orElseThrow(() -> new RuntimeException("Item does not exists."));
              itemService.executeDevolution(item);
              loan.setLoanStatus(LoanStatus.RETURNED);
              loanRepository.save(loan);
+             return loan;
          }else throw new RuntimeException("Loan is not in progress.");
-
      }
+     @Transactional
      public List<FindLoansDTO> findLoans(String status){
          List<Loan> loans;
         if(status.equalsIgnoreCase("ALL")){
             loans = loanRepository.findAll();
-        }else {
+        } else {
             loans = loanRepository.findByStatus(LoanStatus.valueOf(status));
         }
          return loans.stream().map(FindLoansDTO::new).toList();
      }
 
+     @Transactional
     public void checkLoansDelayed() {
         List<Loan> loans = loanRepository.findAll();
-
         loans.forEach(loan -> {
              if(loan.getLoanStatus().equals(LoanStatus.PROGGRESS) &&
                      Instant.now().isAfter(loan.getLoanDevolution())) {
@@ -80,25 +94,4 @@ public class LoanService {
         });
         loanRepository.saveAll(loans);
     }
-
-     private Applicant retrieveApplicant(Integer id){
-         return applicantRepository.findById(id)
-                 .orElseThrow(() -> new RuntimeException("Applicant does not exists."));
-     }
-
-     private Item retrieveItem(Integer id){
-         return itemRepository.findById(id)
-                 .orElseThrow(() -> new RuntimeException("Item does not exists."));
-     }
-
-     private Item checkItemAvailability(Item item){
-         if(item.getStatus().equals(ItemStatus.AVAILABLE)) return item;
-         else throw new RuntimeException("Item is not available for loan.");
-     }
-
-     private Instant setDevolutionDate(Long devolutionDays){
-        if(devolutionDays < 1) {throw new NumberFormatException("Invalid devolution days.");}
-
-         return Instant.now().plus(devolutionDays, ChronoUnit.DAYS);
-     }
 }

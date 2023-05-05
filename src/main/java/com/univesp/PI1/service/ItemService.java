@@ -25,8 +25,13 @@ public class ItemService {
                     .findById(item.getId())
                     .orElseThrow(() ->new RuntimeException("Item does not exists"));
 
+            if(!existingItem.getStatus().equals(ItemStatus.AVAILABLE)){
+                throw new RuntimeException("Item is not available, must return it first.");
+            }
+
             existingItem.setName(item.getName());
             existingItem.setDescription(item.getDescription());
+
             existingItem.setStatus(item.getStatus());
             return itemRepository.save(existingItem);
         }else{
