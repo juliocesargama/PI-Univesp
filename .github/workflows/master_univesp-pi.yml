@@ -49,5 +49,5 @@ jobs:
         with:
           app-name: 'univesp-pi'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DA9A00E6E1DA4ABB87935862C4804070 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C5AB0B83857D4FA9BCB15B20E53E9901 }}
           package: '*.jar'
