@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "3d125908-6b5a-4346-a8b4-9ccf08052efb",
+		"name": "PI Univesp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17341021"
+	},
+	"item": [
+		{
+			"name": "Applicants",
+			"item": [
+				{
+					"name": "Save Applicant",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //No caso de update, usar o atributo abaixo:\r\n    //\"id\": 3,\r\n    \"name\": \"aa da silva\",\r\n    \"phone\": \"(11)99999-9999\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/applicant/save",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"applicant",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Applicants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/applicant/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"applicant",
+								"all"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Items",
+			"item": [
+				{
+					"name": "Save Item",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"1\",\r\n    \"name\": \"projetor\",\r\n    \"description\": \"projetor para computador com entrada hdmi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/item/save",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"item",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/item/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"item",
+								"all"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Loans",
+			"item": [
+				{
+					"name": "Loan",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"itemId\":2,\r\n    \"applicantId\":2,\r\n    \"devolutionDays\": 15\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/loan/new",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"loan",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Devolution",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/devolution/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"devolution",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Loans By Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/loan/find/ALL",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"loan",
+								"find",
+								"ALL"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check delayed Loans",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/loan/check-delayed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"loan",
+								"check-delayed"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
