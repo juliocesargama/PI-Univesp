@@ -27,14 +27,6 @@
 			<version>3.1.2</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.heroku.sdk/heroku-maven-plugin -->
-		<dependency>
-			<groupId>com.heroku.sdk</groupId>
-			<artifactId>heroku-maven-plugin</artifactId>
-			<version>3.0.7</version>
-		</dependency>
-
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -82,6 +74,11 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.10.1</version>
 			</plugin>
 		</plugins>
 	</build>
