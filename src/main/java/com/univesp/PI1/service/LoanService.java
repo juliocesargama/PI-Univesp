@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LoanService {
@@ -80,7 +81,7 @@ public class LoanService {
         } else {
             loans = loanRepository.findByStatus(LoanStatus.valueOf(status));
         }
-         return loans.stream().map(FindLoansDTO::new).toList();
+         return loans.stream().map(FindLoansDTO::new).collect(Collectors.toList());
      }
 
      @Transactional
