@@ -23,5 +23,10 @@ public class ItemController {
         return itemService.save(item);
     }
 
+    @PutMapping(value = "/update/{id}")
+    public Item updateItem(@PathVariable Integer id,@RequestBody Item item){
+        return itemService.update(id, item);
+    }
+
 
 }

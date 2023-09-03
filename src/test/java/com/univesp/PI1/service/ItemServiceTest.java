@@ -60,12 +60,12 @@ public class ItemServiceTest {
 
         Mockito.when(repository.save(item)).thenReturn(item);
         Mockito.when(repository.findById(item.getId())).thenReturn(Optional.ofNullable(item));
-        assertEquals(item, service.save(item));
+        assertEquals(item, service.update(1, item));
     }
 
     @Test
     void UpdateItemFailedTest(){
-        RuntimeException runtimeException = assertThrows(RuntimeException.class, () -> service.save(item));
+        RuntimeException runtimeException = assertThrows(RuntimeException.class, () -> service.update(99,item));
         assertEquals("Item does not exists", runtimeException.getMessage());
     }
 
@@ -74,7 +74,7 @@ public class ItemServiceTest {
         item.setStatus(ItemStatus.BORROWED);
         Mockito.when(repository.findById(item.getId())).thenReturn(Optional.ofNullable(item));
 
-        RuntimeException runtimeException = assertThrows(RuntimeException.class, () -> service.save(item));
+        RuntimeException runtimeException = assertThrows(RuntimeException.class, () -> service.update(1, item));
         assertEquals("Item is not available, must return it first.", runtimeException.getMessage());
     }
 
