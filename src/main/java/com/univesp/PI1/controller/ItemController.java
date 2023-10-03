@@ -2,7 +2,9 @@ package com.univesp.PI1.controller;
 
 import com.univesp.PI1.entity.Item;
 import com.univesp.PI1.service.ItemService;
+import com.univesp.PI1.utils.handler.EndpointResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,18 +16,21 @@ public class ItemController {
     @Autowired
     ItemService itemService;
     @GetMapping(value = "/all")
-    public List<Item> getItems(){
-        return itemService.findAll();
+    public ResponseEntity<List<Item>> getItems(){
+
+        return ResponseEntity.ok(itemService.findAll());
     }
 
     @PostMapping(value = "/save")
-    public Item saveItem(@RequestBody Item item){
-        return itemService.save(item);
+    public ResponseEntity<EndpointResponse> saveItem(@RequestBody Item item){
+        itemService.save(item);
+        return ResponseEntity.ok().body(new EndpointResponse("Item salvo com sucesso!"));
     }
 
     @PutMapping(value = "/update/{id}")
-    public Item updateItem(@PathVariable Integer id,@RequestBody Item item){
-        return itemService.update(id, item);
+    public ResponseEntity<EndpointResponse> updateItem(@PathVariable Integer id, @RequestBody Item item){
+         itemService.update(id, item);
+        return ResponseEntity.ok().body(new EndpointResponse("Item atualizado com sucesso!"));
     }
 
 

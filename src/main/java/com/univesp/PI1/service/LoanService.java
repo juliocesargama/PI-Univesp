@@ -8,7 +8,9 @@ import com.univesp.PI1.entity.Enums.LoanStatus;
 import com.univesp.PI1.repository.ApplicantRepository;
 import com.univesp.PI1.repository.ItemRepository;
 import com.univesp.PI1.repository.LoanRepository;
+import com.univesp.PI1.utils.handler.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,18 +32,18 @@ public class LoanService {
     ItemService itemService;
 
     @Transactional
-     public Loan itemLoan(ItemLoanDTO dto){
+     public void itemLoan(ItemLoanDTO dto){
 
          Loan loan = new Loan();
         Applicant applicant = applicantRepository.findById(dto.getApplicantId())
-                .orElseThrow(() -> new RuntimeException("Applicant does not exists."));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Requerente não encontrado."));
          loan.setApplicant(applicant);
 
          Item item = itemRepository.findById(dto.getItemId())
-                .orElseThrow(() -> new RuntimeException("Item does not exists."));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Item não encontrado."));
 
         if(!item.getStatus().equals(ItemStatus.AVAILABLE)){
-            throw new RuntimeException("Item is not available for loan.");
+            throw new CustomException(HttpStatus.BAD_REQUEST, "Item não está disponível para empréstimo.");
         }
         loan.setItem(item);
         itemService.executeLoan(item);
@@ -50,28 +52,27 @@ public class LoanService {
          loan.setLoanStatus(LoanStatus.PROGGRESS);
 
         if(dto.getDevolutionDays() < 1) {
-            throw new NumberFormatException("Invalid devolution days.");
+            throw new CustomException(HttpStatus.BAD_REQUEST, "Quantidade de dias inválido.");
         }else{
             loan.setLoanDevolution(Instant.now().plus(dto.getDevolutionDays(), ChronoUnit.DAYS));
         }
         loanRepository.save(loan);
-        return loan;
      }
 
      @Transactional
      public Loan itemDevolution(Integer loanId){
 
          Loan loan = loanRepository.findById(loanId)
-                 .orElseThrow(() -> new RuntimeException("Loan does not exists."));
+                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Empréstimo inexistente."));
 
          if(!loan.getLoanStatus().equals(LoanStatus.RETURNED)){
              Item item = itemRepository.findById(loan.getItem().getId())
-                     .orElseThrow(() -> new RuntimeException("Item does not exists."));
+                     .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Item não encontrado."));
              itemService.executeDevolution(item);
              loan.setLoanStatus(LoanStatus.RETURNED);
              loanRepository.save(loan);
              return loan;
-         }else throw new RuntimeException("Loan is not in progress.");
+         }else throw new CustomException(HttpStatus.BAD_REQUEST, "Empréstimo não está em andamento.");
      }
      @Transactional
      public List<FindLoansDTO> findLoans(String status){

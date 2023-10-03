@@ -92,15 +92,10 @@ public class LoanServiceTest {
 
         Mockito.doNothing().when(itemService).executeLoan(Mockito.any(Item.class));
 
-        Loan expectedLoan = loanService.itemLoan(dto);
+        loanService.itemLoan(dto);
 
         Mockito.verify(loanRepository, Mockito.times(1)).save(Mockito.any(Loan.class));
-
         verify(itemService).executeLoan(item);
-
-        assertEquals(loan.getItem(), expectedLoan.getItem());
-        assertEquals(loan.getApplicant(), expectedLoan.getApplicant());
-        assertEquals(expectedLoan.getLoanStatus(), LoanStatus.PROGGRESS);
     }
 
     @Test
@@ -114,7 +109,7 @@ public class LoanServiceTest {
                 .thenReturn(Optional.ofNullable(item));
 
         assertThrows(RuntimeException.class,() -> loanService.itemLoan(dto),
-                "Item is not available for loan.");
+                "Item não está disponível para empréstimo.");
     }
 
     @Test
@@ -130,7 +125,7 @@ public class LoanServiceTest {
         Mockito.doNothing().when(itemService).executeLoan(Mockito.any(Item.class));
 
         assertThrows(RuntimeException.class,() -> loanService.itemLoan(dto),
-                "Invalid devolution days.");
+                "Quantidade de dias inválido.");
     }
 
     @Test
@@ -159,7 +154,7 @@ public class LoanServiceTest {
                 .thenReturn(Optional.ofNullable(loan));
 
         assertThrows(RuntimeException.class,() -> loanService.itemDevolution(loan.getId()),
-                "Loan is not in progress.");
+                "Empréstimo não está em andamento.");
     }
 
     @Test

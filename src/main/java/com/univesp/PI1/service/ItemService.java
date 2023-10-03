@@ -3,7 +3,9 @@ package com.univesp.PI1.service;
 import com.univesp.PI1.entity.Item;
 import com.univesp.PI1.entity.Enums.ItemStatus;
 import com.univesp.PI1.repository.ItemRepository;
+import com.univesp.PI1.utils.handler.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,17 +28,17 @@ public class ItemService {
         if (id != null) {
             Item existingItem = itemRepository
                     .findById(id)
-                    .orElseThrow(() -> new RuntimeException("Item does not exists"));
+                    .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND,"Item não encontrado."));
 
             if (existingItem.getStatus().equals(ItemStatus.BORROWED)) {
-                throw new RuntimeException("Item is not available, must return it first.");
+                throw new CustomException(HttpStatus.BAD_REQUEST,"Item já está emprestado.");
             }
             existingItem.setName(item.getName());
             existingItem.setDescription(item.getDescription());
             existingItem.setStatus(item.getStatus());
             return itemRepository.save(existingItem);
         } else {
-            throw new RuntimeException("Item id is required");
+            throw new CustomException(HttpStatus.BAD_REQUEST,"Número do item é requerido.");
         }
     }
     public void executeDevolution(Item item){

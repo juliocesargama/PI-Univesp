@@ -1,6 +1,7 @@
 package com.univesp.PI1.service;
 
 import com.univesp.PI1.entity.Applicant;
+import com.univesp.PI1.entity.DTOS.ApplicantDTO;
 import com.univesp.PI1.repository.ApplicantRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class ApplicantServiceTest {
@@ -46,24 +48,34 @@ public class ApplicantServiceTest {
         applicant.setId(null);
 
         Mockito.when(repository.save(applicant)).thenReturn(applicant);
-        assertEquals(applicant, service.save(applicant));
+
+        service.save(applicant);
+        verify(repository).save(applicant);
     }
 
     @Test
     void UpdateApplicantTest(){
 
-        applicant.setPhone("11111-1111");
+        ApplicantDTO dto = new ApplicantDTO();
+        dto.setName(applicant.getName());
+        dto.setPhone("11111-1111");
 
         Mockito.when(repository.save(applicant)).thenReturn(applicant);
         Mockito.when(repository.findById(applicant.getId())).thenReturn(Optional.ofNullable(applicant));
-        assertEquals(applicant, service.save(applicant));
+
+        service.update(applicant.getId(), dto);
+        verify(repository).save(applicant);
     }
 
     @Test
     void UpdateApplicantFailedTest(){
 
-        RuntimeException runtimeException = assertThrows(RuntimeException.class, () -> service.save(applicant));
-        assertTrue(runtimeException.getMessage().contains("Applicant does not exists"));
+        ApplicantDTO dto = new ApplicantDTO();
+        dto.setName("João Paulo");
+        dto.setPhone("19999999");
+
+        RuntimeException runtimeException = assertThrows(RuntimeException.class, () -> service.update(2, dto));
+        assertTrue(runtimeException.getMessage().contains("Requerente não encontrado."));
 
     }
 }
