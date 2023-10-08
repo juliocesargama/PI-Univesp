@@ -59,20 +59,20 @@ public class LoanServiceTest {
         item.setId(1);
         item.setName("item");
         item.setDescription("description");
-        item.setStatus(ItemStatus.AVAILABLE);
+        item.setStatus(ItemStatus.Disponivel);
 
         loan.setItem(item);
         loan.setApplicant(applicant);
         loan.setLoanDate(Instant.now());
         loan.setLoanDevolution(Instant.now().plus(15, ChronoUnit.DAYS));
-        loan.setLoanStatus(LoanStatus.PROGGRESS);
+        loan.setLoanStatus(LoanStatus.Andamento);
 
         otherLoan.setId(2);
         otherLoan.setItem(item);
         otherLoan.setApplicant(applicant);
         otherLoan.setLoanDate(Instant.now());
         otherLoan.setLoanDevolution(Instant.now().plus(15, ChronoUnit.DAYS));
-        otherLoan.setLoanStatus(LoanStatus.RETURNED);
+        otherLoan.setLoanStatus(LoanStatus.Devolvido);
 
         loans.add(loan);
         loans.add(otherLoan);
@@ -100,7 +100,7 @@ public class LoanServiceTest {
 
     @Test
     void LoanItemNotAvailableException(){
-        item.setStatus(ItemStatus.BORROWED);
+        item.setStatus(ItemStatus.Emprestado);
 
         Mockito.when(applicantRepository.findById(applicant.getId()))
                 .thenReturn(Optional.ofNullable(applicant));
@@ -143,12 +143,12 @@ public class LoanServiceTest {
 
         verify(itemService).executeDevolution(item);
         verify(loanRepository).save(loan);
-        assertEquals(expectedLoan.getLoanStatus(),LoanStatus.RETURNED);
+        assertEquals(expectedLoan.getLoanStatus(),LoanStatus.Devolvido);
     }
 
     @Test
     void DevolutionFailedLoanNotInProgress(){
-        loan.setLoanStatus(LoanStatus.RETURNED);
+        loan.setLoanStatus(LoanStatus.Devolvido);
 
         Mockito.when(loanRepository.findById(loan.getId()))
                 .thenReturn(Optional.ofNullable(loan));
@@ -193,7 +193,7 @@ public class LoanServiceTest {
         List<Loan> expectedResult = loanRepository.findAll();
 
         assertTrue(expectedResult.stream()
-                .anyMatch(result -> result.getLoanStatus().equals(LoanStatus.DELAYED)));
+                .anyMatch(result -> result.getLoanStatus().equals(LoanStatus.Atrasado)));
         verify(loanRepository).saveAll(loans);
     }
 }

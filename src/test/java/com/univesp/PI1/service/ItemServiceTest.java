@@ -35,7 +35,7 @@ public class ItemServiceTest {
         item.setId(1);
         item.setName("Projetor");
         item.setDescription("com entrada hdmi");
-        item.setStatus(ItemStatus.AVAILABLE);
+        item.setStatus(ItemStatus.Disponivel);
 
         items.add(item);
     }
@@ -77,7 +77,7 @@ public class ItemServiceTest {
 
     @Test
     void UpdateItemFailedItemNotAvailableTest(){
-        item.setStatus(ItemStatus.BORROWED);
+        item.setStatus(ItemStatus.Emprestado);
         Mockito.when(repository.findById(item.getId())).thenReturn(Optional.ofNullable(item));
 
         RuntimeException runtimeException = assertThrows(RuntimeException.class, () -> service.update(1, item));
@@ -87,16 +87,16 @@ public class ItemServiceTest {
     @Test
     void ExecuteLoanTest(){
         service.executeLoan(item);
-        assertEquals(ItemStatus.BORROWED, item.getStatus());
+        assertEquals(ItemStatus.Emprestado, item.getStatus());
         verify(repository).save(item);
     }
 
     @Test
     void ExecuteDevolutionTest(){
-        item.setStatus(ItemStatus.BORROWED);
+        item.setStatus(ItemStatus.Emprestado);
 
         service.executeDevolution(item);
-        assertEquals(ItemStatus.AVAILABLE, item.getStatus());
+        assertEquals(ItemStatus.Disponivel, item.getStatus());
         verify(repository).save(item);
     }
 }

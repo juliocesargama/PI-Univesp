@@ -42,14 +42,14 @@ public class LoanService {
          Item item = itemRepository.findById(dto.getItemId())
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Item não encontrado."));
 
-        if(!item.getStatus().equals(ItemStatus.AVAILABLE)){
+        if(!item.getStatus().equals(ItemStatus.Disponivel)){
             throw new CustomException(HttpStatus.BAD_REQUEST, "Item não está disponível para empréstimo.");
         }
         loan.setItem(item);
         itemService.executeLoan(item);
 
          loan.setLoanDate(Instant.now());
-         loan.setLoanStatus(LoanStatus.PROGGRESS);
+         loan.setLoanStatus(LoanStatus.Andamento);
 
         if(dto.getDevolutionDays() < 1) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "Quantidade de dias inválido.");
@@ -65,11 +65,11 @@ public class LoanService {
          Loan loan = loanRepository.findById(loanId)
                  .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Empréstimo inexistente."));
 
-         if(!loan.getLoanStatus().equals(LoanStatus.RETURNED)){
+         if(!loan.getLoanStatus().equals(LoanStatus.Devolvido)){
              Item item = itemRepository.findById(loan.getItem().getId())
                      .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Item não encontrado."));
              itemService.executeDevolution(item);
-             loan.setLoanStatus(LoanStatus.RETURNED);
+             loan.setLoanStatus(LoanStatus.Devolvido);
              loanRepository.save(loan);
              return loan;
          }else throw new CustomException(HttpStatus.BAD_REQUEST, "Empréstimo não está em andamento.");
@@ -89,9 +89,9 @@ public class LoanService {
     public void checkLoansDelayed() {
         List<Loan> loans = loanRepository.findAll();
         loans.forEach(loan -> {
-             if(loan.getLoanStatus().equals(LoanStatus.PROGGRESS) &&
+             if(loan.getLoanStatus().equals(LoanStatus.Andamento) &&
                      Instant.now().isAfter(loan.getLoanDevolution())) {
-                 loan.setLoanStatus(LoanStatus.DELAYED);
+                 loan.setLoanStatus(LoanStatus.Atrasado);
              }
         });
         loanRepository.saveAll(loans);

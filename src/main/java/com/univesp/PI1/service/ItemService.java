@@ -34,7 +34,7 @@ public class ItemService {
                     .findById(id)
                     .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND,"Item não encontrado."));
 
-            if (existingItem.getStatus().equals(ItemStatus.BORROWED)) {
+            if (existingItem.getStatus().equals(ItemStatus.Emprestado)) {
                 throw new CustomException(HttpStatus.BAD_REQUEST,"Item já está emprestado.");
             }
             existingItem.setName(item.getName());
@@ -46,12 +46,12 @@ public class ItemService {
         }
     }
     public void executeDevolution(Item item){
-        item.setStatus(ItemStatus.AVAILABLE);
+        item.setStatus(ItemStatus.Disponivel);
         itemRepository.save(item);
     }
 
     public void executeLoan(Item item){
-        item.setStatus(ItemStatus.BORROWED);
+        item.setStatus(ItemStatus.Emprestado);
         itemRepository.save(item);
     }
 }
