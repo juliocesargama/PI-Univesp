@@ -21,6 +21,11 @@ public class ItemController {
         return ResponseEntity.ok(itemService.findAll());
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Item> getItem(@PathVariable Integer id){
+        return ResponseEntity.ok(itemService.findById(id));
+    }
+
     @PostMapping(value = "/save")
     public ResponseEntity<EndpointResponse> saveItem(@RequestBody Item item){
         itemService.save(item);

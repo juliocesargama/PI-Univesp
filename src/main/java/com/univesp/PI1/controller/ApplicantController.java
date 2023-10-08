@@ -21,6 +21,11 @@ public class ApplicantController {
         return ResponseEntity.ok(applicantService.findAll());
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Applicant> getApplicantById(@PathVariable Integer id){
+        return ResponseEntity.ok(applicantService.findById(id));
+    }
+
     @PostMapping(value = "/save")
     public ResponseEntity<EndpointResponse> saveApplicant(@RequestBody Applicant applicant){
         applicantService.save(applicant);

@@ -47,6 +47,12 @@ public class ItemServiceTest {
     }
 
     @Test
+    void FindItemByIdTest(){
+        Mockito.when(repository.findById(item.getId())).thenReturn(Optional.ofNullable(item));
+        assertEquals(item, service.findById(item.getId()));
+    }
+
+    @Test
     void SaveItemTest(){
         item.setId(null);
 

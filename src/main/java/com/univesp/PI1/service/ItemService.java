@@ -20,6 +20,10 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
+    public Item findById(Integer id){
+        return itemRepository.findById(id).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND,"Item não encontrado."));
+    }
+
     public Item save(Item item){
         return itemRepository.save(item);
     }

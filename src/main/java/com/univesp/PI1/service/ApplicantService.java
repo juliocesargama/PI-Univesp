@@ -19,6 +19,12 @@ public class ApplicantService {
         return applicantRepository.findAll();
     }
 
+    public Applicant findById(Integer id){
+        return applicantRepository
+                .findById(id)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND,"Requerente não encontrado."));
+    }
+
     public void save(Applicant applicant){
 
         if(applicant.getId() == null) {

@@ -44,6 +44,12 @@ public class ApplicantServiceTest {
     }
 
     @Test
+    void FindApplicantByIdTest(){
+        Mockito.when(repository.findById(applicant.getId())).thenReturn(Optional.ofNullable(applicant));
+        assertEquals(applicant, service.findById(applicant.getId()));
+    }
+
+    @Test
     void SaveApplicantTest(){
         applicant.setId(null);
 
