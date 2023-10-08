@@ -34,12 +34,11 @@ public class ItemService {
                     .findById(id)
                     .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND,"Item não encontrado."));
 
-            if (existingItem.getStatus().equals(ItemStatus.Emprestado)) {
-                throw new CustomException(HttpStatus.BAD_REQUEST,"Item já está emprestado.");
-            }
             existingItem.setName(item.getName());
             existingItem.setDescription(item.getDescription());
-            existingItem.setStatus(item.getStatus());
+            if (!existingItem.getStatus().equals(ItemStatus.Emprestado)) {
+                existingItem.setStatus(item.getStatus());
+            }
             return itemRepository.save(existingItem);
         } else {
             throw new CustomException(HttpStatus.BAD_REQUEST,"Número do item é requerido.");

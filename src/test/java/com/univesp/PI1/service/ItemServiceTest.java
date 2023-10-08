@@ -76,12 +76,12 @@ public class ItemServiceTest {
     }
 
     @Test
-    void UpdateItemFailedItemNotAvailableTest(){
+    void UpdateItemItemNotAvailableWithoutChangeStatusTest(){
         item.setStatus(ItemStatus.Emprestado);
-        Mockito.when(repository.findById(item.getId())).thenReturn(Optional.ofNullable(item));
 
-        RuntimeException runtimeException = assertThrows(RuntimeException.class, () -> service.update(1, item));
-        assertEquals("Item já está emprestado.", runtimeException.getMessage());
+        Mockito.when(repository.save(item)).thenReturn(item);
+        Mockito.when(repository.findById(item.getId())).thenReturn(Optional.ofNullable(item));
+        assertEquals(item, service.update(1, item));
     }
 
     @Test
