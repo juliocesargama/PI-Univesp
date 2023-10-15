@@ -77,7 +77,7 @@ public class LoanService {
      @Transactional
      public List<FindLoansDTO> findLoans(String status){
          List<Loan> loans;
-        if(status.equalsIgnoreCase("ALL")){
+        if(status.equalsIgnoreCase("Todos")){
             loans = loanRepository.findAll();
         } else {
             loans = loanRepository.findByStatus(LoanStatus.valueOf(status));
