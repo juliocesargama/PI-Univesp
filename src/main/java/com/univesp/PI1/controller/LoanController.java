@@ -10,29 +10,29 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/api")
+@RestController
 public class LoanController {
     @Autowired
     LoanService loanService;
 
-    @PostMapping("/loan/new")
+    @PostMapping("/api/loan/new")
     public ResponseEntity<EndpointResponse> executeLoan(@RequestBody ItemLoanDTO dto){
         loanService.itemLoan(dto);
         return ResponseEntity.ok().body(new EndpointResponse("Empréstimo realizado com sucesso!"));
     }
 
-    @PostMapping("/devolution/{devolutionId}")
+    @PostMapping("/api/devolution/{devolutionId}")
     public ResponseEntity<EndpointResponse> executeDevolution(@PathVariable Integer devolutionId){
         loanService.itemDevolution(devolutionId);
         return ResponseEntity.ok().body(new EndpointResponse("Devolução realizada com sucesso!"));
     }
 
-    @GetMapping("/loan/find/{status}")
+    @GetMapping("/api/loan/find/{status}")
     public ResponseEntity<List<FindLoansDTO>> findLoans(@PathVariable String status){
         return ResponseEntity.ok(loanService.findLoans(status));
     }
 
-    @PostMapping("/loan/check-delayed")
+    @PostMapping("/api/loan/check-delayed")
     public ResponseEntity<EndpointResponse> checkLoansDelayed(){
 
         loanService.checkLoansDelayed();
