@@ -1,9 +1,9 @@
 package com.univesp.PI1.entity;
 
 import com.univesp.PI1.entity.Enums.LoanStatus;
+import jakarta.persistence.*;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.time.Instant;
 
 @Entity

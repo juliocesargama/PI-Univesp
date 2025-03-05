@@ -159,7 +159,7 @@ public class LoanServiceTest {
 
     @Test
     void FindAllLoansTest(){
-        String status = "ALL";
+        String status = "Todos";
 
         Mockito.when(loanRepository.findAll()).thenReturn(loans);
         List<FindLoansDTO> expectedList = loanService.findLoans(status);
@@ -169,7 +169,7 @@ public class LoanServiceTest {
 
     @Test
     void FindLoansByStatusTest(){
-        String status = "RETURNED";
+        String status = "Devolvido";
 
         Mockito.when(loanRepository.findByStatus(LoanStatus.valueOf(status)))
                 .thenReturn(Collections.singletonList(otherLoan));

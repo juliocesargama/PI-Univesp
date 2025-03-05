@@ -1,9 +1,8 @@
 package com.univesp.PI1.entity;
 
 import com.univesp.PI1.entity.Enums.ItemStatus;
+import jakarta.persistence.*;
 import lombok.Data;
-
-import javax.persistence.*;
 
 @Entity
 @Data

@@ -1,8 +1,7 @@
 package com.univesp.PI1.entity;
 
+import jakarta.persistence.*;
 import lombok.Data;
-
-import javax.persistence.*;
 
 @Entity
 @Data
