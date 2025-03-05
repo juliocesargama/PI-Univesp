@@ -6,9 +6,9 @@ Para este semestre, implementamos um sistema gerenciador de materiais pedagógic
 
 ### Tecnologias utilizadas
 
-- Linguagem de programação: Java 17
-- Framework web: Spring 3.0.5
-- Banco de dados relacional: MySQL 8.0
+- Linguagem de programação: Java 21
+- Framework web: Spring 3.4.2
+- Banco de dados relacional: PostgreSQL 15
 
 ### Diagrama de classes
 ![PI drawio](https://user-images.githubusercontent.com/70298438/230520696-68ac3df9-dd1e-4a59-8556-292653512560.png)
